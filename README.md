@@ -1,5 +1,8 @@
 # Vulkan C++ examples and demos
 
+[Forked from https://github.com/SaschaWillems/Vulkan]
+Please refer the original repo. Forked version is for study only.
+
 A comprehensive collection of open source C++ examples for [Vulkan®](https://www.khronos.org/vulkan/), the new generation graphics and compute API from Khronos.
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BHXPMV6ZKPH9E)
