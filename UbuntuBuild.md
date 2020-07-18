@@ -15,3 +15,23 @@ That’s it for vulkan sdk (assuming Nvidia drivers are installed)
 Test by running:  vulkaninfo (Super useful info)  
 
 --- 
+
+## ASSIMP dependency 
+ 
+
+Get assimp from github (https://github.com/assimp/assimp/blob/master/Build.md)   
+Build using cmake   
+cmake CMakeLists.txt   
+make install   
+That’s it!   
+
+--- 
+
+##  Get SW VulkanLab Code from git 
+Build it with cmake   
+https://github.com/krexspace/VulkanLab.git   
+mkdir build_linux64   
+cd build_linux64   
+cmake -S .. -B . 
+
+---
