@@ -234,5 +234,4 @@ data/models/**/*.bin
 data/models/**/*.glb
 data/models/**/*.png
 data/models/**/*.jpg
-
 data/
