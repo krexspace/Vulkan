@@ -71,7 +71,7 @@ set(EXAMPLES
 	distancefieldfonts
 	dynamicuniformbuffer
 	gears
-	gears_ext1
+	gearsxa
 	geometryshader
 	gltfloading
 	gltfscenerendering

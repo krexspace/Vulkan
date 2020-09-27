@@ -124,9 +124,9 @@ public:
 		std::vector<int32_t> toothCount = { 20, 10, 10 };
 		std::vector<float> toothDepth = { 0.7f, 0.7f, 0.7f };
 		std::vector<glm::vec3> colors = {
-			glm::vec3(1.0f, 0.0f, 0.0f),
-			glm::vec3(0.0f, 1.0f, 0.2f),
-			glm::vec3(0.0f, 1.0f, 1.0f)
+			glm::vec3(.7f, 0.4f, 0.0f),
+			glm::vec3(0.0f, 0.8f, 0.4f),
+			glm::vec3(0.6f, 0.3f, 0.4f)
 		};
 		std::vector<glm::vec3> positions = {
 			glm::vec3(-3.0, 0.0, 0.0),
@@ -211,6 +211,25 @@ public:
 
 		VK_CHECK_RESULT(vkCreateDescriptorPool(device, &descriptorPoolInfo, nullptr, &descriptorPool));
 	}
+
+	// @inputs : device
+	// @effect: 
+	// create intermediate: vkCreateDescriptorSetLayout 
+	// create final: vkCreatePipelineLayout -> pipelineLayout
+	// @output: pipelineLayout
+	// @used in: preparePipelines
+	// Tied to vertex shader uniform buffer
+	// layout (binding = 0) uniform UBO 
+	/*
+	layout (binding = 0) uniform UBO {
+		mat4 projection;
+		mat4 model;
+		mat4 normal;
+		mat4 view;
+		vec3 lightpos;
+	}
+	ubo;
+	*/
 
 	void setupDescriptorSetLayout()
 	{
@@ -349,7 +368,9 @@ public:
 		VulkanExampleBase::prepare();
 		prepareVertices();
 		setupDescriptorSetLayout();
+		// 1 per solid
 		preparePipelines();
+		// 3 for each gear because they are of diffrent sizes
 		setupDescriptorPool();
 		setupDescriptorSets();
 		updateUniformBuffers();
