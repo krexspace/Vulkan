@@ -15,61 +15,6 @@
 #include "gltfengine.h"
 #include <memory>
 
-VkDescriptorImageInfo VulkanglTFScene::getTextureDescriptor(const size_t index)
-{
-	return images[index].texture.descriptor;
-}
-
-/*
-	glTF rendering functions
-*/
-
-// Draw a single node including child nodes (if present)
-void VulkanglTFScene::drawNode(VkCommandBuffer commandBuffer, VkPipelineLayout pipelineLayout, VulkanglTFScene::Node node)
-{
-	if (!node.visible) {
-		return;
-	}
-	if (node.mesh.primitives.size() > 0) {
-		// Pass the node's matrix via push constanst
-		// Traverse the node hierarchy to the top-most parent to get the final matrix of the current node
-		glm::mat4 nodeMatrix = node.matrix;
-		VulkanglTFScene::Node* currentParent = node.parent;
-		while (currentParent) {
-			nodeMatrix = currentParent->matrix * nodeMatrix;
-			currentParent = currentParent->parent;
-		}
-		// Pass the final matrix to the vertex shader using push constants
-		vkCmdPushConstants(commandBuffer, pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(glm::mat4), &nodeMatrix);
-		for (VulkanglTFScene::Primitive& primitive : node.mesh.primitives) {
-			if (primitive.indexCount > 0) {
-				VulkanglTFScene::Material& material = materials[primitive.materialIndex];
-				// POI: Bind the pipeline for the node's material
-				vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, material.pipeline);
-				vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 1, 1, &material.descriptorSet, 0, nullptr);
-				vkCmdDrawIndexed(commandBuffer, primitive.indexCount, 1, primitive.firstIndex, 0, 0);
-			}
-		}
-	}
-	for (auto& child : node.children) {
-		drawNode(commandBuffer, pipelineLayout, child);
-	}
-}
-
-// Draw the glTF scene starting at the top-level-nodes
-void VulkanglTFScene::draw(VkCommandBuffer commandBuffer, VkPipelineLayout pipelineLayout)
-{
-
-	// All vertices and indices are stored in single buffers, so we only need to bind once
-	VkDeviceSize offsets[1] = { 0 };
-	vkCmdBindVertexBuffers(commandBuffer, 0, 1, &vertices.buffer, offsets);
-	vkCmdBindIndexBuffer(commandBuffer, indices.buffer, 0, VK_INDEX_TYPE_UINT32);
-	// Render all nodes at top-level
-	for (auto& node : nodes) {
-		drawNode(commandBuffer, pipelineLayout, node);
-	}
-}
-
 /*
 	Vulkan Example class
 */
