@@ -1,0 +1,10 @@
+file(GLOB ENGINEBASE_SRC "*.cpp" "*.hpp")
+file(GLOB ENGINEBASE_HEADERS "*.hpp")
+
+if(WIN32)
+    add_library(enginebase STATIC ${ENGINEBASE_SRC})
+    target_link_libraries(enginebase ${ASSIMP_LIBRARIES} ${WINLIBS} ktx)
+ else(WIN32)
+    add_library(enginebase STATIC ${ENGINEBASE_SRC})
+    target_link_libraries(enginebase ${ASSIMP_LIBRARIES} ${XCB_LIBRARIES} ${WAYLAND_CLIENT_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ktx)
+endif(WIN32)
