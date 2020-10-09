@@ -230,7 +230,6 @@ public:
 	}
 	ubo;
 	*/
-
 	void setupDescriptorSetLayout()
 	{
 		std::vector<VkDescriptorSetLayoutBinding> setLayoutBindings =
@@ -372,8 +371,12 @@ public:
 		preparePipelines();
 		// 3 for each gear because they are of diffrent sizes
 		setupDescriptorPool();
+		// Calls gear->setupDescriptorSet for each gear
 		setupDescriptorSets();
+		// Also done inside render
 		updateUniformBuffers();
+
+		// Invokes the gear->draw() and uiDraw()
 		buildCommandBuffers();
 		prepared = true;
 	}
